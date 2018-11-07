@@ -58,6 +58,10 @@ namespace ResultProcessor.Controllers
         {
             if (ModelState.IsValid)
             {
+                DateTime createdDate = DateTime.Now;
+                string createdBy = User.Identity.Name;
+                faculty.CreatedBy = createdBy;
+                faculty.DateCreated = createdDate;
                 _context.Add(faculty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -97,6 +101,10 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
+                    DateTime createdDate = DateTime.Now;
+                    string createdBy = User.Identity.Name;
+                    faculty.CreatedBy = createdBy;
+                    faculty.DateCreated = createdDate;
                     _context.Update(faculty);
                     await _context.SaveChangesAsync();
                 }
