@@ -24,6 +24,6 @@ namespace ResultProcessor.Models
         public virtual Department Department { get; set; }
         public virtual Programme Programme { get; set; }
 
-        public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
+        //public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
     }
 }
