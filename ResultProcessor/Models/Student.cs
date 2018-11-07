@@ -16,6 +16,8 @@ namespace ResultProcessor.Models
         public Gender Gender { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public DateTime DateEntered { get; set; }
+        public string EnteredBy { get; set; }
         public int DeptId { get; set; }
         public int ProgrammeId { get; set; }
 
