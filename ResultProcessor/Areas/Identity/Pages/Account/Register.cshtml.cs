@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ResultProcessor.Models;
 
 namespace ResultProcessor.Areas.Identity.Pages.Account
 {
@@ -72,21 +73,18 @@ namespace ResultProcessor.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                //var roleAdmin = "Admin";
-                var roleUser = "User";
-                //var roleManager = "Manager";
                 var user = new IdentityUser { UserName = Input.Username, Email = Input.Email };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!await _roleManager.RoleExistsAsync(roleUser))
+                    if (!await _roleManager.RoleExistsAsync(Constants.User))
                     {
-                        var roleResult = await _roleManager.CreateAsync(new IdentityRole(roleUser));
+                        var roleResult = await _roleManager.CreateAsync(new IdentityRole(Constants.User));
                         if (roleResult.Succeeded)
                         {
-                            var res = await _userManager.AddToRoleAsync(user, roleUser);
+                            var res = await _userManager.AddToRoleAsync(user, Constants.User);
 
                             if (res.Succeeded)
                             {
