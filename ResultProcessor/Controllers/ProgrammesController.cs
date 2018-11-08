@@ -71,7 +71,7 @@ namespace ResultProcessor.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.DepartmentId);
             return View(programme);
         }
 
@@ -88,7 +88,7 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.DepartmentId);
             return View(programme);
         }
 
@@ -128,7 +128,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.DepartmentId);
             return View(programme);
         }
 
