@@ -28,22 +28,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    @*<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">RPMS</a>*@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a asp-area="" asp-controller="Home" asp-action="Index">Dashboard</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                                <li><a asp-area="" asp-controller="Courses" asp-action="Index">Course</a></li>
-                                <li><a asp-area="" asp-controller="Departments" asp-action="Index">Department</a></li>
-                                <li><a asp-area="" asp-controller="Students" asp-action="Index">Student</a></li>
-                                <li><a asp-area="" asp-controller="Programmes" asp-action="Index">Programme</a></li>
-                                <li><a asp-area="" asp-controller="Faculties" asp-action="Index">Faculty</a></li>
-                            </ul>
-                        </li>
-
+                        @await Html.PartialAsync("_LayoutMenu")
                         <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                         <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                     </ul>
