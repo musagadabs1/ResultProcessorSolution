@@ -13,6 +13,8 @@ namespace ResultProcessor.Models
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
         public DateTime DateCreated { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
         public virtual ICollection<Student> Students { get; set; }
         public virtual ICollection<Course> Courses { get; set; }

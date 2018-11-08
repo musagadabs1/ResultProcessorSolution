@@ -11,6 +11,8 @@ namespace ResultProcessor.Models
         public string DeptName { get; set; }
         public DateTime DateCreated { get; set; }
         public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         public int FacultyId { get; set; }
 

@@ -50,7 +50,7 @@ namespace ResultProcessor.Controllers
         // GET: Students/Create
         public IActionResult Create()
         {
-            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "Id");
+            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName");
             return View();
         }
 
@@ -73,7 +73,7 @@ namespace ResultProcessor.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "Id", student.ProgrammeId);
+            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", student.Programme.ProgrammeName);
             return View(student);
         }
 
@@ -90,7 +90,7 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "Id", student.ProgrammeId);
+            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", student.Programme.ProgrammeName);
             return View(student);
         }
 
@@ -132,7 +132,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "Id", student.ProgrammeId);
+            ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", student.Programme.ProgrammeName);
             return View(student);
         }
 
