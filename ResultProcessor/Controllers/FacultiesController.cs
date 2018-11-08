@@ -22,7 +22,7 @@ namespace ResultProcessor.Controllers
         // GET: Faculties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Faculty.ToListAsync());
+            return View(await _context.Faculty.Where(f => f.IsActive==true).ToListAsync());
         }
 
         // GET: Faculties/Details/5
@@ -62,6 +62,7 @@ namespace ResultProcessor.Controllers
                 string createdBy = User.Identity.Name;
                 faculty.CreatedBy = createdBy;
                 faculty.DateCreated = createdDate;
+
                 _context.Add(faculty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -105,6 +106,7 @@ namespace ResultProcessor.Controllers
                     string createdBy = User.Identity.Name;
                     faculty.CreatedBy = createdBy;
                     faculty.DateCreated = createdDate;
+
                     _context.Update(faculty);
                     await _context.SaveChangesAsync();
                 }
