@@ -16,6 +16,7 @@ namespace ResultProcessor.Models
 
         public virtual ICollection<Student> Students { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
+        public virtual Department Department { get; set; }
         //public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
 
 
