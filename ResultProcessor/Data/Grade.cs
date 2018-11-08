@@ -7,6 +7,6 @@ namespace ResultProcessor.Models
 {
     public enum Grade
     {
-        A,B,C,D,E,F
+       F=0,E,D,C,B,A
     }
 }
