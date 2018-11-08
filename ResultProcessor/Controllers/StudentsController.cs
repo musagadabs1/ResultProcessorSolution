@@ -59,7 +59,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId,ModifiedBy,ModifiedDate")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -99,7 +99,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId,ModifiedBy,ModifiedDate")] Student student)
         {
             if (id != student.Id)
             {
@@ -113,8 +113,8 @@ namespace ResultProcessor.Controllers
                     var dateEntered = DateTime.Now;
                     var enteredBy = User.Identity.Name;
 
-                    student.EnteredBy = enteredBy;
-                    student.DateEntered = dateEntered;
+                    student.ModifiedBy = enteredBy;
+                    student.ModifiedDate = dateEntered;
 
                     _context.Update(student);
                     await _context.SaveChangesAsync();

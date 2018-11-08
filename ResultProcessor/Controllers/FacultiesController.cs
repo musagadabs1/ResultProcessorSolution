@@ -56,7 +56,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FacultyName,DateCreated,IsActive,CreatedBy")] Faculty faculty)
+        public async Task<IActionResult> Create([Bind("Id,FacultyName,DateCreated,IsActive,CreatedBy,ModifiedBy,ModifiedDate")] Faculty faculty)
         {
             if (ModelState.IsValid)
             {
@@ -93,7 +93,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FacultyName,DateCreated,IsActive,CreatedBy")] Faculty faculty)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FacultyName,DateCreated,IsActive,CreatedBy,ModifiedBy,ModifiedDate")] Faculty faculty)
         {
             if (id != faculty.Id)
             {
@@ -106,8 +106,8 @@ namespace ResultProcessor.Controllers
                 {
                     DateTime createdDate = DateTime.Now;
                     string createdBy = User.Identity.Name;
-                    faculty.CreatedBy = createdBy;
-                    faculty.DateCreated = createdDate;
+                    faculty.ModifiedBy = createdBy;
+                    faculty.ModifiedDate = createdDate;
 
                     _context.Update(faculty);
                     await _context.SaveChangesAsync();
