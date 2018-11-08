@@ -17,11 +17,7 @@ namespace ResultProcessor.Models
         public Grade Grade { get; set; }
         public DateTime DateEntered { get; set; }
         public string EnteredBy { get; set; }
-        //public int ProgrammeId { get; set; }
-
-
-        //public virtual Programme Programme { get; set; }
-        //public virtual Department Department { get; set; }
+        
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }
     }
