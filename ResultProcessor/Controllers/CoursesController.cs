@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class CoursesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace ResultProcessor.Controllers
         // GET: Courses
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Course.Include(c => c.Programme);
+            var applicationDbContext = _context.Course.Include(c => c.Programme).Where(c => c.IsActive==true);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -49,6 +51,25 @@ namespace ResultProcessor.Controllers
         public IActionResult Create()
         {
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName");
+
+            var Semester = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "First", Value = "1"},
+                    new SelectListItem {Text = "Second", Value = "2"}
+                };
+
+            ViewBag.Semester = Semester;
+            var level = new List<SelectListItem>
+            {
+                new SelectListItem {Text="level I", Value = "1"},
+                new SelectListItem {Text="level II", Value = "2"},
+                new SelectListItem {Text="level III", Value = "3"},
+                new SelectListItem {Text="level IV", Value = "4"},
+                new SelectListItem {Text="level V", Value = "5"},
+                new SelectListItem {Text="level SPILL I", Value = "6"},
+                new SelectListItem {Text="level SPILL II", Value = "7"},
+            };
+            ViewBag.Level = level;
             return View();
         }
 
@@ -87,6 +108,24 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
+            var Semester = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "First", Value = "1"},
+                    new SelectListItem {Text = "Second", Value = "2"}
+                };
+
+            ViewBag.Semester = Semester;
+            var level = new List<SelectListItem>
+            {
+                new SelectListItem {Text="level I", Value = "1"},
+                new SelectListItem {Text="level II", Value = "2"},
+                new SelectListItem {Text="level III", Value = "3"},
+                new SelectListItem {Text="level IV", Value = "4"},
+                new SelectListItem {Text="level V", Value = "5"},
+                new SelectListItem {Text="level SPILL I", Value = "6"},
+                new SelectListItem {Text="level SPILL II", Value = "7"},
+            };
+            ViewBag.Level = level;
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", course.ProgrammeId);
             return View(course);
         }
