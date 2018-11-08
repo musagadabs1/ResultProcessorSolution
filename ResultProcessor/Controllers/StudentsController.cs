@@ -51,6 +51,13 @@ namespace ResultProcessor.Controllers
         public IActionResult Create()
         {
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName");
+            var Genders = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "Male", Value = "1"},
+                    new SelectListItem {Text = "Female", Value = "2"}
+                };
+
+            ViewBag.Genders = Genders;
             return View();
         }
 
@@ -91,6 +98,13 @@ namespace ResultProcessor.Controllers
                 return NotFound();
             }
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", student.Programme.ProgrammeName);
+            var Genders = new List<SelectListItem>
+                {
+                    new SelectListItem {Text = "Male", Value = "1"},
+                    new SelectListItem {Text = "Female", Value = "2"}
+                };
+
+            ViewBag.Genders = Genders;
             return View(student);
         }
 
