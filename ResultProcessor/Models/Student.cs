@@ -19,6 +19,8 @@ namespace ResultProcessor.Models
         public string Email { get; set; }
         public DateTime DateEntered { get; set; }
         public string EnteredBy { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
         public bool IsActive { get; set; }
         //public int DeptId { get; set; }
         public int ProgrammeId { get; set; }

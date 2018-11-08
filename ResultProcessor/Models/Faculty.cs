@@ -12,6 +12,8 @@ namespace ResultProcessor.Models
         public DateTime? DateCreated { get; set; }
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
         public virtual ICollection<Department> Departments { get; set; }
     }
