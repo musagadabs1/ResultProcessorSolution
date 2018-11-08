@@ -21,9 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CreatedBy)
             </th>*@
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.IsActive)
-            </th>*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Faculty)
             </th>
@@ -41,12 +41,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsActive)
             </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Faculty.Id)
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Faculty.FacultyName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

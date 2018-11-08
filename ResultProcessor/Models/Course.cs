@@ -18,6 +18,6 @@ namespace ResultProcessor.Models
 
         public virtual Programme Programme { get; set; }
 
-        public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
+        //public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
     }
 }

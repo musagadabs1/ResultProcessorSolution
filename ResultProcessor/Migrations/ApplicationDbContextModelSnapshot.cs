@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResultProcessor.Data;
 
-namespace ResultProcessor.Data.Migrations
+namespace ResultProcessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181107114330_firstMigration")]
-    partial class firstMigration
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,6 +180,137 @@ namespace ResultProcessor.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ResultProcessor.Models.Course", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<int>("ProgrammeId");
+
+                    b.Property<string>("Title");
+
+                    b.Property<int>("Unit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgrammeId");
+
+                    b.ToTable("Course");
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Department", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<string>("DeptName");
+
+                    b.Property<int>("FacultyId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FacultyId");
+
+                    b.ToTable("Department");
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Faculty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<string>("FacultyName");
+
+                    b.Property<bool>("IsActive");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Faculty");
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Programme", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<DateTime>("DateCreated");
+
+                    b.Property<int>("DepartmentId");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("ProgrammeName");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Programme");
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DOAdmission");
+
+                    b.Property<DateTime>("DOB");
+
+                    b.Property<DateTime>("DateEntered");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("EnteredBy");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<int>("Gender");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("LastName");
+
+                    b.Property<string>("MiddleName");
+
+                    b.Property<string>("PhoneNumber");
+
+                    b.Property<int>("ProgrammeId");
+
+                    b.Property<string>("RegNo");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProgrammeId");
+
+                    b.ToTable("Student");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -224,6 +353,38 @@ namespace ResultProcessor.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Course", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Programme", "Programme")
+                        .WithMany("Courses")
+                        .HasForeignKey("ProgrammeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Department", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Faculty", "Faculty")
+                        .WithMany("Departments")
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Programme", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Department", "Department")
+                        .WithMany("Programmes")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Student", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Programme", "Programme")
+                        .WithMany("Students")
+                        .HasForeignKey("ProgrammeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

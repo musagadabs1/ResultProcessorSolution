@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class FacultiesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace ResultProcessor.Controllers
         // GET: Faculties
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Faculty.ToListAsync());
+            return View(await _context.Faculty.Where(f => f.IsActive==true).ToListAsync());
         }
 
         // GET: Faculties/Details/5
@@ -62,6 +64,7 @@ namespace ResultProcessor.Controllers
                 string createdBy = User.Identity.Name;
                 faculty.CreatedBy = createdBy;
                 faculty.DateCreated = createdDate;
+
                 _context.Add(faculty);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -105,6 +108,7 @@ namespace ResultProcessor.Controllers
                     string createdBy = User.Identity.Name;
                     faculty.CreatedBy = createdBy;
                     faculty.DateCreated = createdDate;
+
                     _context.Update(faculty);
                     await _context.SaveChangesAsync();
                 }

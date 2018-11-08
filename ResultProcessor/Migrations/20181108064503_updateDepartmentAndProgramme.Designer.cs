@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ResultProcessor.Data;
 
-namespace ResultProcessor.Data.Migrations
+namespace ResultProcessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181107120855_studentsAdded")]
-    partial class studentsAdded
+    [Migration("20181108064503_updateDepartmentAndProgramme")]
+    partial class updateDepartmentAndProgramme
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -261,6 +261,8 @@ namespace ResultProcessor.Data.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
+                    b.Property<int?>("DepartmentId");
+
                     b.Property<int>("DeptId");
 
                     b.Property<bool>("IsActive");
@@ -269,48 +271,9 @@ namespace ResultProcessor.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Programme");
-                });
-
-            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CourseId");
-
-                    b.Property<DateTime>("DateEntered");
-
-                    b.Property<int?>("DepartmentId");
-
-                    b.Property<int>("DeptId");
-
-                    b.Property<string>("EnteredBy");
-
-                    b.Property<int>("Grade");
-
-                    b.Property<int>("Level");
-
-                    b.Property<int>("ProgrammeId");
-
-                    b.Property<float>("Score");
-
-                    b.Property<int>("Semester");
-
-                    b.Property<int>("StudentId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("ProgrammeId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("ScoreSheet");
+                    b.ToTable("Programme");
                 });
 
             modelBuilder.Entity("ResultProcessor.Models.Student", b =>
@@ -323,15 +286,17 @@ namespace ResultProcessor.Data.Migrations
 
                     b.Property<DateTime>("DOB");
 
-                    b.Property<int?>("DepartmentId");
-
-                    b.Property<int>("DeptId");
+                    b.Property<DateTime>("DateEntered");
 
                     b.Property<string>("Email");
+
+                    b.Property<string>("EnteredBy");
 
                     b.Property<string>("FirstName");
 
                     b.Property<int>("Gender");
+
+                    b.Property<bool>("IsActive");
 
                     b.Property<string>("LastName");
 
@@ -341,9 +306,9 @@ namespace ResultProcessor.Data.Migrations
 
                     b.Property<int>("ProgrammeId");
 
-                    b.HasKey("Id");
+                    b.Property<string>("RegNo");
 
-                    b.HasIndex("DepartmentId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProgrammeId");
 
@@ -411,34 +376,15 @@ namespace ResultProcessor.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
+            modelBuilder.Entity("ResultProcessor.Models.Programme", b =>
                 {
-                    b.HasOne("ResultProcessor.Models.Course", "Course")
-                        .WithMany("ScoreSheets")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("ResultProcessor.Models.Department", "Department")
-                        .WithMany("ScoreSheets")
+                        .WithMany("Programmes")
                         .HasForeignKey("DepartmentId");
-
-                    b.HasOne("ResultProcessor.Models.Programme", "Programme")
-                        .WithMany("ScoreSheets")
-                        .HasForeignKey("ProgrammeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ResultProcessor.Models.Student", "Student")
-                        .WithMany("ScoreSheets")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ResultProcessor.Models.Student", b =>
                 {
-                    b.HasOne("ResultProcessor.Models.Department", "Department")
-                        .WithMany("Students")
-                        .HasForeignKey("DepartmentId");
-
                     b.HasOne("ResultProcessor.Models.Programme", "Programme")
                         .WithMany("Students")
                         .HasForeignKey("ProgrammeId")

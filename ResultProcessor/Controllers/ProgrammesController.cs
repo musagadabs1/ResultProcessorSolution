@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class ProgrammesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,8 @@ namespace ResultProcessor.Controllers
         // GET: Programmes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Programme.ToListAsync());
+            var applicationDbContext = _context.Programme.Include(p => p.Department).Where(p => p.IsActive==true);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Programmes/Details/5
@@ -34,6 +37,7 @@ namespace ResultProcessor.Controllers
             }
 
             var programme = await _context.Programme
+                .Include(p => p.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (programme == null)
             {
@@ -46,6 +50,7 @@ namespace ResultProcessor.Controllers
         // GET: Programmes/Create
         public IActionResult Create()
         {
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName");
             return View();
         }
 
@@ -54,18 +59,19 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DeptId,ProgrammeName,IsActive,CreatedBy,DateCreated")] Programme programme)
+        public async Task<IActionResult> Create([Bind("Id,DepartmentId,ProgrammeName,IsActive,CreatedBy,DateCreated")] Programme programme)
         {
             if (ModelState.IsValid)
             {
-                DateTime createdDate = DateTime.Now;
-                string createdBy = User.Identity.Name;
+                var createdBy = User.Identity.Name;
+                var dateCreated = DateTime.Now;
+                programme.DateCreated = dateCreated;
                 programme.CreatedBy = createdBy;
-                programme.DateCreated = createdDate;
                 _context.Add(programme);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
             return View(programme);
         }
 
@@ -82,6 +88,7 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
             return View(programme);
         }
 
@@ -90,7 +97,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DeptId,ProgrammeName,IsActive,CreatedBy,DateCreated")] Programme programme)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DepartmentId,ProgrammeName,IsActive,CreatedBy,DateCreated")] Programme programme)
         {
             if (id != programme.Id)
             {
@@ -101,10 +108,10 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    DateTime createdDate = DateTime.Now;
-                    string createdBy = User.Identity.Name;
+                    var createdBy = User.Identity.Name;
+                    var dateCreated = DateTime.Now;
+                    programme.DateCreated = dateCreated;
                     programme.CreatedBy = createdBy;
-                    programme.DateCreated = createdDate;
                     _context.Update(programme);
                     await _context.SaveChangesAsync();
                 }
@@ -121,6 +128,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["DepartmentId"] = new SelectList(_context.Department, "Id", "DeptName", programme.Department.DeptName);
             return View(programme);
         }
 
@@ -133,6 +141,7 @@ namespace ResultProcessor.Controllers
             }
 
             var programme = await _context.Programme
+                .Include(p => p.Department)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (programme == null)
             {

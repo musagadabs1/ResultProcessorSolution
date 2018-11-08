@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
+    [Authorize(Roles="Admin,Manager")]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +24,7 @@ namespace ResultProcessor.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Student.Include(s => s.Programme);
+            var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive==true);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -57,14 +59,16 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,DeptId,ProgrammeId")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
         {
             if (ModelState.IsValid)
             {
-                var enteredBy = HttpContext.User.Identity.Name;
                 var dateEntered = DateTime.Now;
-                student.DateEntered = dateEntered;
+                var enteredBy = User.Identity.Name;
+
                 student.EnteredBy = enteredBy;
+                student.DateEntered = dateEntered;
+
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +99,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,DeptId,ProgrammeId")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
         {
             if (id != student.Id)
             {
@@ -106,10 +110,12 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    var enteredBy = HttpContext.User.Identity.Name;
                     var dateEntered = DateTime.Now;
-                    student.DateEntered = dateEntered;
+                    var enteredBy = User.Identity.Name;
+
                     student.EnteredBy = enteredBy;
+                    student.DateEntered = dateEntered;
+
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
