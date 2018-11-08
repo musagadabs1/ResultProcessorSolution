@@ -48,7 +48,8 @@ namespace ResultProcessor.Controllers
         // GET: Departments/Create
         public IActionResult Create()
         {
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id");
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName");
+            
             return View();
         }
 
@@ -71,7 +72,7 @@ namespace ResultProcessor.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
             return View(department);
         }
 
@@ -88,7 +89,7 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
             return View(department);
         }
 
@@ -130,7 +131,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
             return View(department);
         }
 
