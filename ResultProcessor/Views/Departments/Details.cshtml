@@ -4,10 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h2>Details</h2>
+<h2>Department Details</h2>
 
 <div>
-    <h4>Department</h4>
+    @*<h4>Department</h4>*@
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -38,7 +38,7 @@
             @Html.DisplayNameFor(model => model.Faculty)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Faculty.Id)
+            @Html.DisplayFor(model => model.Faculty.FacultyName)
         </dd>
     </dl>
 </div>
