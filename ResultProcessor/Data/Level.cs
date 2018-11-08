@@ -7,6 +7,6 @@ namespace ResultProcessor.Models
 {
     public enum Level
     {
-        I,II,III,IV,V,SPILL
+        LevelI=1, LevelII, LevelIII, LevelIV, LevelV, SPILLI,SPILLII
     }
 }

@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ResultProcessor.Models.Student>
+﻿@model IEnumerable<ResultProcessor.Models.Course>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>List of Students</h2>
+<h2>List of Courses</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,20 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MiddleName)
+                @Html.DisplayNameFor(model => model.Code)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                @Html.DisplayNameFor(model => model.Unit)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RegNo)
+                @Html.DisplayNameFor(model => model.Semester)
             </th>
-            
             <th>
-                @Html.DisplayNameFor(model => model.Gender)
+                @Html.DisplayNameFor(model => model.Level)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             
             <th>
@@ -39,22 +41,23 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MiddleName)
+                @Html.DisplayFor(modelItem => item.Code)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @Html.DisplayFor(modelItem => item.Unit)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RegNo)
+                @Html.DisplayFor(modelItem => item.Semester)
             </td>
-            
             <td>
-                @Html.DisplayFor(modelItem => item.Gender)
+                @Html.DisplayFor(modelItem => item.Level)
             </td>
-            
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Programme.ProgrammeName)
             </td>

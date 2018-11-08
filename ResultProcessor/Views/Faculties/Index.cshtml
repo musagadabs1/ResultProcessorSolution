@@ -15,15 +15,11 @@
             <th>
                 @Html.DisplayNameFor(model => model.FacultyName)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>*@
+           
             <th>
                 @Html.DisplayNameFor(model => model.IsActive)
             </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.CreatedBy)
-            </th>*@
+            
             <th></th>
         </tr>
     </thead>
@@ -33,15 +29,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FacultyName)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>*@
+            
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
             </td>
-            @*<td>
-                @Html.DisplayFor(modelItem => item.CreatedBy)
-            </td>*@
+            
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

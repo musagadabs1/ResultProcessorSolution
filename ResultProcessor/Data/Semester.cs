@@ -7,7 +7,7 @@ namespace ResultProcessor.Models
 {
     public enum Semester
     {
-        First,Second
+        First=1,Second
 
     }
 }
