@@ -9,7 +9,6 @@ namespace ResultProcessor.Models
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
-        //public int DeptId { get; set; }
         public int CourseId { get; set; }
         public float Score { get; set; }
         public Semester Semester { get; set; }
