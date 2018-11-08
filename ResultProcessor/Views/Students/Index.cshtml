@@ -39,7 +39,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.DateEntered)
             </th>
             <th>
@@ -47,7 +47,7 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.IsActive)
-            </th>
+            </th>*@
             <th>
                 @Html.DisplayNameFor(model => model.Programme)
             </th>
@@ -84,7 +84,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.DateEntered)
             </td>
             <td>
@@ -92,9 +92,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IsActive)
-            </td>
+            </td>*@
             <td>
-                @Html.DisplayFor(modelItem => item.Programme.Id)
+                @Html.DisplayFor(modelItem => item.Programme.ProgrammeName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

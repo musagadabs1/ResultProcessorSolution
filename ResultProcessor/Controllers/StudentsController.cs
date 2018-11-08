@@ -22,7 +22,7 @@ namespace ResultProcessor.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Student.Include(s => s.Programme);
+            var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive==true);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -61,6 +61,12 @@ namespace ResultProcessor.Controllers
         {
             if (ModelState.IsValid)
             {
+                var dateEntered = DateTime.Now;
+                var enteredBy = User.Identity.Name;
+
+                student.EnteredBy = enteredBy;
+                student.DateEntered = dateEntered;
+
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -102,6 +108,12 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
+                    var dateEntered = DateTime.Now;
+                    var enteredBy = User.Identity.Name;
+
+                    student.EnteredBy = enteredBy;
+                    student.DateEntered = dateEntered;
+
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
