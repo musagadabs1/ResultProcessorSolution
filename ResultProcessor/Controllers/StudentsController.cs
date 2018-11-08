@@ -57,14 +57,10 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,DeptId,ProgrammeId")] Student student)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
         {
             if (ModelState.IsValid)
             {
-                var enteredBy = HttpContext.User.Identity.Name;
-                var dateEntered = DateTime.Now;
-                student.DateEntered = dateEntered;
-                student.EnteredBy = enteredBy;
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -95,7 +91,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,DeptId,ProgrammeId")] Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,MiddleName,LastName,RegNo,DOB,DOAdmission,Gender,PhoneNumber,Email,DateEntered,EnteredBy,IsActive,ProgrammeId")] Student student)
         {
             if (id != student.Id)
             {
@@ -106,10 +102,6 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    var enteredBy = HttpContext.User.Identity.Name;
-                    var dateEntered = DateTime.Now;
-                    student.DateEntered = dateEntered;
-                    student.EnteredBy = enteredBy;
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }

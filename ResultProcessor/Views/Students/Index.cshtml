@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.RegNo)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.DOB)
             </th>
             <th>
@@ -36,14 +39,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            @*<th>
+            <th>
                 @Html.DisplayNameFor(model => model.DateEntered)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.EnteredBy)
-            </th>*@
+            </th>
             <th>
-                @Html.DisplayNameFor(model => model.DeptId)
+                @Html.DisplayNameFor(model => model.IsActive)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Programme)
@@ -64,6 +67,9 @@
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.RegNo)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DOB)
             </td>
             <td>
@@ -78,14 +84,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            @*<td>
+            <td>
                 @Html.DisplayFor(modelItem => item.DateEntered)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.EnteredBy)
-            </td>*@
+            </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeptId)
+                @Html.DisplayFor(modelItem => item.IsActive)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Programme.Id)
