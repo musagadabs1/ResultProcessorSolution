@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,10 +9,20 @@ namespace ResultProcessor.Models
     public class Course
     {
         public int Id { get; set; }
+        [Required(ErrorMessage ="Course Title is Required")]
+        [Display(Name ="Course Title")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "Course Code is Required")]
+        [Display(Name = "Course Code")]
         public string Code { get; set; }
+        [Required(ErrorMessage = "Course Unit is Required")]
+        [Display(Name = "Course Unit")]
         public int Unit { get; set; }
+        [Display(Name ="Programme")]
         public int ProgrammeId { get; set; }
+        public Semester Semester { get; set; }
+        public Level Level { get; set; }
+        [Display(Name ="Is Active?")]
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
         public string CreatedBy { get; set; }
