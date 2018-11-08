@@ -22,7 +22,7 @@ namespace ResultProcessor.Controllers
         // GET: Departments
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Department.Include(d => d.Faculty).Where(d => d.IsActive==true);
+            var applicationDbContext = _context.Department.Include(d => d.Faculty);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -48,8 +48,7 @@ namespace ResultProcessor.Controllers
         // GET: Departments/Create
         public IActionResult Create()
         {
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName");
-            
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id");
             return View();
         }
 
@@ -62,17 +61,11 @@ namespace ResultProcessor.Controllers
         {
             if (ModelState.IsValid)
             {
-                var createdBy = User.Identity.Name;
-                var dateCreated = DateTime.Now;
-
-                department.DateCreated = dateCreated;
-                department.CreatedBy = createdBy;
-
                 _context.Add(department);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
             return View(department);
         }
 
@@ -89,7 +82,7 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
             return View(department);
         }
 
@@ -109,12 +102,6 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    var createdBy = User.Identity.Name;
-                    var dateCreated = DateTime.Now;
-
-                    department.DateCreated = dateCreated;
-                    department.CreatedBy = createdBy;
-
                     _context.Update(department);
                     await _context.SaveChangesAsync();
                 }
@@ -131,7 +118,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "FacultyName", department.Faculty.FacultyName);
+            ViewData["FacultyId"] = new SelectList(_context.Faculty, "Id", "Id", department.FacultyId);
             return View(department);
         }
 

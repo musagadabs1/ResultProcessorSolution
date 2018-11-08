@@ -22,7 +22,7 @@ namespace ResultProcessor.Controllers
         // GET: Programmes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Programme.Where(p => p.IsActive==true).ToListAsync());
+            return View(await _context.Programme.ToListAsync());
         }
 
         // GET: Programmes/Details/5
@@ -58,11 +58,6 @@ namespace ResultProcessor.Controllers
         {
             if (ModelState.IsValid)
             {
-                var createdBy = User.Identity.Name;
-                var dateCreated = DateTime.Now;
-                programme.DateCreated = dateCreated;
-                programme.CreatedBy = createdBy;
-
                 _context.Add(programme);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -102,11 +97,6 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    var createdBy = User.Identity.Name;
-                    var dateCreated = DateTime.Now;
-                    programme.DateCreated = dateCreated;
-                    programme.CreatedBy = createdBy;
-
                     _context.Update(programme);
                     await _context.SaveChangesAsync();
                 }
