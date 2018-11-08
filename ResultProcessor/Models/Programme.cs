@@ -8,7 +8,7 @@ namespace ResultProcessor.Models
     public class Programme
     {
         public int Id { get; set; }
-        public int DeptId { get; set; }
+        public int DepartmentId { get; set; }
         public string ProgrammeName { get; set; }
         public bool IsActive { get; set; }
         public string CreatedBy { get; set; }
