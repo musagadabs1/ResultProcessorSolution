@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,12 +20,24 @@ namespace ResultProcessor.Controllers
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public ScoreSheetsController(ApplicationDbContext context,SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager)
+        public ScoreSheetsController(ApplicationDbContext context,SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager, IHostingEnvironment hostingEnvironment)
         {
             _context = context;
             _signInManager = signInManager;
             _userManager = userManager;
+            _hostingEnvironment = hostingEnvironment;
+        }
+
+        public async Task<IActionResult> Import()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Import(IFormFile file)
+        {
+            return View();
         }
 
         // GET: ScoreSheets
