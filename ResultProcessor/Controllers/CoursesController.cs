@@ -54,20 +54,20 @@ namespace ResultProcessor.Controllers
 
             var Semester = new List<SelectListItem>
                 {
-                    new SelectListItem {Text = "First", Value = "1"},
-                    new SelectListItem {Text = "Second", Value = "2"}
+                    new SelectListItem {Text = "First", Value = "First"},
+                    new SelectListItem {Text = "Second", Value = "Second"}
                 };
 
             ViewBag.Semester = Semester;
             var level = new List<SelectListItem>
             {
-                new SelectListItem {Text="level I", Value = "1"},
-                new SelectListItem {Text="level II", Value = "2"},
-                new SelectListItem {Text="level III", Value = "3"},
-                new SelectListItem {Text="level IV", Value = "4"},
-                new SelectListItem {Text="level V", Value = "5"},
-                new SelectListItem {Text="level SPILL I", Value = "6"},
-                new SelectListItem {Text="level SPILL II", Value = "7"},
+                new SelectListItem {Text="level I", Value = "level I"},
+                new SelectListItem {Text="level II", Value = "level II"},
+                new SelectListItem {Text="level III", Value = "level III"},
+                new SelectListItem {Text="level IV", Value = "level IV"},
+                new SelectListItem {Text="level V", Value = "level V"},
+                new SelectListItem {Text="level SPILL I", Value = "level SPILL I"},
+                new SelectListItem {Text="level SPILL II", Value = "level SPILL II"},
             };
             ViewBag.Level = level;
             return View();
@@ -110,20 +110,20 @@ namespace ResultProcessor.Controllers
             }
             var Semester = new List<SelectListItem>
                 {
-                    new SelectListItem {Text = "First", Value = "1"},
-                    new SelectListItem {Text = "Second", Value = "2"}
+                    new SelectListItem {Text = "First", Value = "First"},
+                    new SelectListItem {Text = "Second", Value = "Second"}
                 };
 
             ViewBag.Semester = Semester;
             var level = new List<SelectListItem>
             {
-                new SelectListItem {Text="level I", Value = "1"},
-                new SelectListItem {Text="level II", Value = "2"},
-                new SelectListItem {Text="level III", Value = "3"},
-                new SelectListItem {Text="level IV", Value = "4"},
-                new SelectListItem {Text="level V", Value = "5"},
-                new SelectListItem {Text="level SPILL I", Value = "6"},
-                new SelectListItem {Text="level SPILL II", Value = "7"},
+                new SelectListItem {Text="level I", Value = "level I"},
+                new SelectListItem {Text="level II", Value = "level II"},
+                new SelectListItem {Text="level III", Value = "level III"},
+                new SelectListItem {Text="level IV", Value = "level IV"},
+                new SelectListItem {Text="level V", Value = "level V"},
+                new SelectListItem {Text="level SPILL I", Value = "level SPILL I"},
+                new SelectListItem {Text="level SPILL II", Value = "level SPILL II"},
             };
             ViewBag.Level = level;
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", course.ProgrammeId);

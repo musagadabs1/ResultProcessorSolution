@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using ResultProcessor.Data;
 using ResultProcessor.Models;
 
@@ -37,7 +39,33 @@ namespace ResultProcessor.Controllers
         [HttpPost]
         public async Task<IActionResult> Import(IFormFile file)
         {
-            return View();
+            string rootFolder = _hostingEnvironment.WebRootPath;
+            string filePath = file.FileName;
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, filePath));
+
+            using (var package=new ExcelPackage(fileInfo))
+            {
+                var excelWorkSheet = package.Workbook.Worksheets["ScoreSheet"];
+                int totalRows = excelWorkSheet.Dimension.Rows;
+                var scoreSheets = new List<ScoreSheet>();
+                for (int i = 2; i <= totalRows; i++)
+                {
+                    scoreSheets.Add(new ScoreSheet
+                    {
+                        RegNo = excelWorkSheet.Cells[i, 1].Value.ToString(),
+                        CourseId =int.Parse( excelWorkSheet.Cells[i, 2].Value.ToString()),
+                        Score=float.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
+                        Semester= excelWorkSheet.Cells[i,4].Value.ToString(),
+                        Level=excelWorkSheet.Cells[i,5].Value.ToString(),
+                        Grade=excelWorkSheet.Cells[i,6].Value.ToString()
+
+                    });
+                }
+               await _context.ScoreSheet.AddRangeAsync(scoreSheets);
+              await  _context.SaveChangesAsync();
+
+            }
+            return Redirect("Index");
         }
 
         // GET: ScoreSheets
@@ -107,30 +135,30 @@ namespace ResultProcessor.Controllers
 
             var Semester = new List<SelectListItem>
                 {
-                    new SelectListItem {Text = "First", Value = "1"},
-                    new SelectListItem {Text = "Second", Value = "2"}
+                    new SelectListItem {Text = "First", Value = "First"},
+                    new SelectListItem {Text = "Second", Value = "Second"}
                 };
 
             ViewBag.Semester = Semester;
             var level = new List<SelectListItem>
             {
-                new SelectListItem {Text="level I", Value = "1"},
-                new SelectListItem {Text="level II", Value = "2"},
-                new SelectListItem {Text="level III", Value = "3"},
-                new SelectListItem {Text="level IV", Value = "4"},
-                new SelectListItem {Text="level V", Value = "5"},
-                new SelectListItem {Text="level SPILL I", Value = "6"},
-                new SelectListItem {Text="level SPILL II", Value = "7"}
+                new SelectListItem {Text="level I", Value = "level I"},
+                new SelectListItem {Text="level II", Value = "level II"},
+                new SelectListItem {Text="level III", Value = "level III"},
+                new SelectListItem {Text="level IV", Value = "level IV"},
+                new SelectListItem {Text="level V", Value = "level V"},
+                new SelectListItem {Text="level SPILL I", Value = "level SPILL I"},
+                new SelectListItem {Text="level SPILL II", Value = "level SPILL II"}
             };
             ViewBag.Level = level;
             var Grades = new List<SelectListItem>
             {
-                new SelectListItem {Text="A", Value = "5"},
-                new SelectListItem {Text="B", Value = "4"},
-                new SelectListItem {Text="C", Value = "3"},
-                new SelectListItem {Text="D", Value = "2"},
-                new SelectListItem {Text="E", Value = "1"},
-                new SelectListItem {Text="F", Value = "0"}
+                new SelectListItem {Text="A", Value = "A"},
+                new SelectListItem {Text="B", Value = "B"},
+                new SelectListItem {Text="C", Value = "C"},
+                new SelectListItem {Text="D", Value = "D"},
+                new SelectListItem {Text="E", Value = "E"},
+                new SelectListItem {Text="F", Value = "F"}
             };
             ViewBag.Grades = Grades;
             return View();

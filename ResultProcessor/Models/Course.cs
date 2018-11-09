@@ -20,8 +20,8 @@ namespace ResultProcessor.Models
         public int Unit { get; set; }
         [Display(Name ="Programme")]
         public int ProgrammeId { get; set; }
-        public Semester Semester { get; set; }
-        public Level Level { get; set; }
+        public string Semester { get; set; }
+        public string Level { get; set; }
         [Display(Name ="Is Active?")]
         public bool IsActive { get; set; }
         public DateTime DateCreated { get; set; }
