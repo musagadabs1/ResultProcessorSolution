@@ -16,19 +16,41 @@ namespace ResultProcessor.Controllers
     public class ScoreSheetsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ScoreSheetsController(ApplicationDbContext context)
+        public ScoreSheetsController(ApplicationDbContext context,SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         // GET: ScoreSheets
         public async Task<IActionResult> Index()
         {
-            var user = HttpContext.User.Identity.Name;
-            //UserManager<IdentityUser>
-            var applicationDbContext = _context.ScoreSheet.Include(s => s.Course).Where(c => c.EnteredBy==user || c.ModifiedBy==user);
-            return View(await applicationDbContext.ToListAsync());
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                var isAdmin = currentUser != null && await _userManager.IsInRoleAsync(currentUser, Constants.Administrator);
+
+                if (isAdmin)
+                {
+                    var user = HttpContext.User.Identity.Name;
+                    //UserManager<IdentityUser>
+                    var applicationDbContext = _context.ScoreSheet.Include(s => s.Course);
+                    return View(await applicationDbContext.ToListAsync());
+                }
+                else
+                {
+                    var user = HttpContext.User.Identity.Name;
+                    //UserManager<IdentityUser>
+                    var applicationDbContext = _context.ScoreSheet.Include(s => s.Course).Where(c => c.EnteredBy == user || c.ModifiedBy == user);
+                    return View(await applicationDbContext.ToListAsync());
+                }
+            }
+            return View();
+            
         }
         private async Task<List<string>> GetRegNo()
         {

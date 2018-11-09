@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,41 @@ namespace ResultProcessor.Controllers
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public StudentsController(ApplicationDbContext context)
+        public StudentsController(ApplicationDbContext context, SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var user = HttpContext.User.Identity.Name;
-            var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive==true && (s.EnteredBy== user || s.ModifiedBy==user));
-            return View(await applicationDbContext.ToListAsync());
+
+            if (_signInManager.IsSignedIn(User))
+            {
+                var currentUser = await _userManager.GetUserAsync(User);
+                var isAdmin = currentUser != null && await _userManager.IsInRoleAsync(currentUser, Constants.Administrator);
+
+                if (isAdmin)
+                {
+                    var students = _context.Student.Include(s => s.Programme).Where(s => s.IsActive == true );
+                    return View(await students.ToListAsync());
+                }
+                else
+                {
+                    var user = HttpContext.User.Identity.Name;
+
+                    var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive == true && (s.EnteredBy == user || s.ModifiedBy == user));
+                    return View(await applicationDbContext.ToListAsync());
+                }
+
+                
+            }
+            return View();
         }
 
         // GET: Students/Details/5
