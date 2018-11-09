@@ -4,8 +4,9 @@
     ViewData["Title"] = "Edit";
 }
 
-<h2>Edit Score Sheet</h2>
+<h2>Edit</h2>
 
+<h4>ScoreSheet</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -13,9 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="StudentId" class="control-label"></label>
-                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
-                <span asp-validation-for="StudentId" class="text-danger"></span>
+                <label asp-for="RegNo" class="control-label"></label>
+                <input asp-for="RegNo" class="form-control" />
+                <span asp-validation-for="RegNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CourseId" class="control-label"></label>

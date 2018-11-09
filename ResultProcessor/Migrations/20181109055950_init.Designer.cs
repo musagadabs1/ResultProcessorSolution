@@ -10,8 +10,8 @@ using ResultProcessor.Data;
 namespace ResultProcessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181109051153_scoresheet")]
-    partial class scoresheet
+    [Migration("20181109055950_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -319,17 +319,15 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime>("ModifiedDate");
 
+                    b.Property<int>("RegNo");
+
                     b.Property<float>("Score");
 
                     b.Property<int>("Semester");
 
-                    b.Property<int>("StudentId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("ScoreSheet");
                 });
@@ -455,11 +453,6 @@ namespace ResultProcessor.Migrations
                     b.HasOne("ResultProcessor.Models.Course", "Course")
                         .WithMany("ScoreSheets")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ResultProcessor.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

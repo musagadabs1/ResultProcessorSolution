@@ -2,24 +2,23 @@
 
 namespace ResultProcessor.Migrations
 {
-    public partial class addDataAnnotation : Migration
+    public partial class scoresheetmodelchanged : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "DeptName",
-                table: "Department",
+                name: "RegNo",
+                table: "ScoreSheet",
                 nullable: false,
-                oldClrType: typeof(string),
-                oldNullable: true);
+                oldClrType: typeof(int));
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "DeptName",
-                table: "Department",
-                nullable: true,
+            migrationBuilder.AlterColumn<int>(
+                name: "RegNo",
+                table: "ScoreSheet",
+                nullable: false,
                 oldClrType: typeof(string));
         }
     }

@@ -317,17 +317,16 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime>("ModifiedDate");
 
+                    b.Property<string>("RegNo")
+                        .IsRequired();
+
                     b.Property<float>("Score");
 
                     b.Property<int>("Semester");
 
-                    b.Property<int>("StudentId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("ScoreSheet");
                 });
@@ -453,11 +452,6 @@ namespace ResultProcessor.Migrations
                     b.HasOne("ResultProcessor.Models.Course", "Course")
                         .WithMany("ScoreSheets")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ResultProcessor.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

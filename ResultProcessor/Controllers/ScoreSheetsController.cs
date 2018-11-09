@@ -22,7 +22,7 @@ namespace ResultProcessor.Controllers
         // GET: ScoreSheets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ScoreSheet.Include(s => s.Course).Include(s => s.Student);
+            var applicationDbContext = _context.ScoreSheet.Include(s => s.Course);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -36,7 +36,6 @@ namespace ResultProcessor.Controllers
 
             var scoreSheet = await _context.ScoreSheet
                 .Include(s => s.Course)
-                .Include(s => s.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (scoreSheet == null)
             {
@@ -50,7 +49,7 @@ namespace ResultProcessor.Controllers
         public IActionResult Create()
         {
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code");
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName");
+            
             var Semester = new List<SelectListItem>
                 {
                     new SelectListItem {Text = "First", Value = "1"},
@@ -66,7 +65,7 @@ namespace ResultProcessor.Controllers
                 new SelectListItem {Text="level IV", Value = "4"},
                 new SelectListItem {Text="level V", Value = "5"},
                 new SelectListItem {Text="level SPILL I", Value = "6"},
-                new SelectListItem {Text="level SPILL II", Value = "7"},
+                new SelectListItem {Text="level SPILL II", Value = "7"}
             };
             ViewBag.Level = level;
             var Grades = new List<SelectListItem>
@@ -76,8 +75,7 @@ namespace ResultProcessor.Controllers
                 new SelectListItem {Text="C", Value = "3"},
                 new SelectListItem {Text="D", Value = "2"},
                 new SelectListItem {Text="E", Value = "1"},
-                new SelectListItem {Text="F", Value = "0"},
-
+                new SelectListItem {Text="F", Value = "0"}
             };
             ViewBag.Grades = Grades;
             return View();
@@ -88,20 +86,15 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,StudentId,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Create([Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (ModelState.IsValid)
             {
-                var createdBy = User.Identity.Name;
-                var createdDate = DateTime.Now;
-                scoreSheet.EnteredBy = createdBy;
-                scoreSheet.DateEntered = createdDate;
                 _context.Add(scoreSheet);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", scoreSheet.StudentId);
             return View(scoreSheet);
         }
 
@@ -119,36 +112,6 @@ namespace ResultProcessor.Controllers
                 return NotFound();
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", scoreSheet.StudentId);
-            var Semester = new List<SelectListItem>
-                {
-                    new SelectListItem {Text = "First", Value = "1"},
-                    new SelectListItem {Text = "Second", Value = "2"}
-                };
-
-            ViewBag.Semester = Semester;
-            var level = new List<SelectListItem>
-            {
-                new SelectListItem {Text="level I", Value = "1"},
-                new SelectListItem {Text="level II", Value = "2"},
-                new SelectListItem {Text="level III", Value = "3"},
-                new SelectListItem {Text="level IV", Value = "4"},
-                new SelectListItem {Text="level V", Value = "5"},
-                new SelectListItem {Text="level SPILL I", Value = "6"},
-                new SelectListItem {Text="level SPILL II", Value = "7"},
-            };
-            ViewBag.Level = level;
-            var Grades = new List<SelectListItem>
-            {
-                new SelectListItem {Text="A", Value = "5"},
-                new SelectListItem {Text="B", Value = "4"},
-                new SelectListItem {Text="C", Value = "3"},
-                new SelectListItem {Text="D", Value = "2"},
-                new SelectListItem {Text="E", Value = "1"},
-                new SelectListItem {Text="F", Value = "0"},
-                
-            };
-            ViewBag.Grades = Grades;
             return View(scoreSheet);
         }
 
@@ -157,7 +120,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (id != scoreSheet.Id)
             {
@@ -168,10 +131,6 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
-                    var createdBy = User.Identity.Name;
-                    var createdDate = DateTime.Now;
-                    scoreSheet.ModifiedBy = createdBy;
-                    scoreSheet.ModifiedDate = createdDate;
                     _context.Update(scoreSheet);
                     await _context.SaveChangesAsync();
                 }
@@ -189,7 +148,6 @@ namespace ResultProcessor.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
-            ViewData["StudentId"] = new SelectList(_context.Student, "Id", "FirstName", scoreSheet.StudentId);
             return View(scoreSheet);
         }
 
@@ -203,7 +161,6 @@ namespace ResultProcessor.Controllers
 
             var scoreSheet = await _context.ScoreSheet
                 .Include(s => s.Course)
-                .Include(s => s.Student)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (scoreSheet == null)
             {

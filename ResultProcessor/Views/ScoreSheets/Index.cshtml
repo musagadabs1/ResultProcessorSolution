@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Score Sheet Collections</h2>
+<h2>Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,6 +12,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RegNo)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Score)
             </th>
@@ -24,12 +27,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.Grade)
             </th>
-            
             <th>
-                @Html.DisplayNameFor(model => model.Course)
+                @Html.DisplayNameFor(model => model.DateEntered)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Student)
+                @Html.DisplayNameFor(model => model.EnteredBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedBy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModifiedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Course)
             </th>
             <th></th>
         </tr>
@@ -37,6 +48,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RegNo)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Score)
             </td>
@@ -49,12 +63,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Grade)
             </td>
-            
             <td>
-                @Html.DisplayFor(modelItem => item.Course.Code)
+                @Html.DisplayFor(modelItem => item.DateEntered)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Student.FirstName)
+                @Html.DisplayFor(modelItem => item.EnteredBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModifiedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Code)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
