@@ -11,7 +11,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
-    [Authorize(Roles="Admin,Manager")]
+    [Authorize(Roles="Admin,Manager,User")]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -127,6 +127,10 @@ namespace ResultProcessor.Controllers
                 {
                     var dateEntered = DateTime.Now;
                     var enteredBy = User.Identity.Name;
+                    if (enteredBy == null) 
+                    {
+                        Challenge();
+                    }
 
                     student.ModifiedBy = enteredBy;
                     student.ModifiedDate = dateEntered;
