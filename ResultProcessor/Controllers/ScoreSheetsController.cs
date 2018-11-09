@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
+    [Authorize(Roles="Admin,User,Lecturer,Manager")]
     public class ScoreSheetsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,9 +25,24 @@ namespace ResultProcessor.Controllers
         // GET: ScoreSheets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.ScoreSheet.Include(s => s.Course);
+            var user = HttpContext.User.Identity.Name;
+            //UserManager<IdentityUser>
+            var applicationDbContext = _context.ScoreSheet.Include(s => s.Course).Where(c => c.EnteredBy==user || c.ModifiedBy==user);
             return View(await applicationDbContext.ToListAsync());
         }
+        private async Task<List<string>> GetRegNo()
+        {
+            List<string> regNo = new List<string>();
+
+            var dbRegNo = await (from reg in _context.Student select reg.RegNo).ToListAsync();
+
+            foreach (var item in dbRegNo)
+            {
+                regNo.Add(item);
+            }
+            return regNo;
+        }
+
 
         // GET: ScoreSheets/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -48,8 +66,9 @@ namespace ResultProcessor.Controllers
         // GET: ScoreSheets/Create
         public IActionResult Create()
         {
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code");
-            
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title");
+            ViewData["RegNo"] = new SelectList(_context.Student, "RegNo", "RegNo");
+
             var Semester = new List<SelectListItem>
                 {
                     new SelectListItem {Text = "First", Value = "1"},
@@ -90,11 +109,15 @@ namespace ResultProcessor.Controllers
         {
             if (ModelState.IsValid)
             {
+                var createdBy = User.Identity.Name;
+                var dateCreated = DateTime.Now;
+                scoreSheet.EnteredBy = createdBy;
+                scoreSheet.DateEntered = dateCreated;
                 _context.Add(scoreSheet);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", scoreSheet.CourseId);
             return View(scoreSheet);
         }
 
@@ -111,7 +134,8 @@ namespace ResultProcessor.Controllers
             {
                 return NotFound();
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", scoreSheet.CourseId);
+            ViewData["RegNo"] = new SelectList(_context.Student, "RegNo", "RegNo");
             return View(scoreSheet);
         }
 
@@ -131,6 +155,11 @@ namespace ResultProcessor.Controllers
             {
                 try
                 {
+                    var createdBy = User.Identity.Name;
+                    var dateCreated = DateTime.Now;
+                    scoreSheet.ModifiedBy = createdBy;
+                    scoreSheet.ModifiedDate = dateCreated;
+
                     _context.Update(scoreSheet);
                     await _context.SaveChangesAsync();
                 }
@@ -147,7 +176,7 @@ namespace ResultProcessor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Code", scoreSheet.CourseId);
+            ViewData["CourseId"] = new SelectList(_context.Course, "Id", "Title", scoreSheet.CourseId);
             return View(scoreSheet);
         }
 
