@@ -10,8 +10,8 @@ using ResultProcessor.Data;
 namespace ResultProcessor.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181108061524_init")]
-    partial class init
+    [Migration("20181109063217_scoresheetmodelchanged")]
+    partial class scoresheetmodelchanged
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -188,7 +188,8 @@ namespace ResultProcessor.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                    b.Property<string>("Code")
+                        .IsRequired();
 
                     b.Property<string>("CreatedBy");
 
@@ -196,9 +197,18 @@ namespace ResultProcessor.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<int>("Level");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
+
                     b.Property<int>("ProgrammeId");
 
-                    b.Property<string>("Title");
+                    b.Property<int>("Semester");
+
+                    b.Property<string>("Title")
+                        .IsRequired();
 
                     b.Property<int>("Unit");
 
@@ -219,11 +229,16 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<string>("DeptName");
+                    b.Property<string>("DeptName")
+                        .IsRequired();
 
                     b.Property<int>("FacultyId");
 
                     b.Property<bool>("IsActive");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
 
                     b.HasKey("Id");
 
@@ -242,9 +257,14 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime?>("DateCreated");
 
-                    b.Property<string>("FacultyName");
+                    b.Property<string>("FacultyName")
+                        .IsRequired();
 
                     b.Property<bool>("IsActive");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
 
                     b.HasKey("Id");
 
@@ -261,15 +281,56 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime>("DateCreated");
 
-                    b.Property<int>("DeptId");
+                    b.Property<int>("DepartmentId");
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("ProgrammeName");
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
+
+                    b.Property<string>("ProgrammeName")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DepartmentId");
+
                     b.ToTable("Programme");
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CourseId");
+
+                    b.Property<DateTime>("DateEntered");
+
+                    b.Property<string>("EnteredBy");
+
+                    b.Property<int>("Grade");
+
+                    b.Property<int>("Level");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
+
+                    b.Property<string>("RegNo")
+                        .IsRequired();
+
+                    b.Property<float>("Score");
+
+                    b.Property<int>("Semester");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("ScoreSheet");
                 });
 
             modelBuilder.Entity("ResultProcessor.Models.Student", b =>
@@ -288,21 +349,29 @@ namespace ResultProcessor.Migrations
 
                     b.Property<string>("EnteredBy");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<int>("Gender");
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<string>("MiddleName");
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
 
                     b.Property<int>("ProgrammeId");
 
-                    b.Property<string>("RegNo");
+                    b.Property<string>("RegNo")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -369,6 +438,22 @@ namespace ResultProcessor.Migrations
                     b.HasOne("ResultProcessor.Models.Faculty", "Faculty")
                         .WithMany("Departments")
                         .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.Programme", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Department", "Department")
+                        .WithMany("Programmes")
+                        .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Course", "Course")
+                        .WithMany("ScoreSheets")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

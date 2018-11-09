@@ -297,6 +297,40 @@ namespace ResultProcessor.Migrations
                     b.ToTable("Programme");
                 });
 
+            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CourseId");
+
+                    b.Property<DateTime>("DateEntered");
+
+                    b.Property<string>("EnteredBy");
+
+                    b.Property<int>("Grade");
+
+                    b.Property<int>("Level");
+
+                    b.Property<string>("ModifiedBy");
+
+                    b.Property<DateTime>("ModifiedDate");
+
+                    b.Property<string>("RegNo")
+                        .IsRequired();
+
+                    b.Property<float>("Score");
+
+                    b.Property<int>("Semester");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("ScoreSheet");
+                });
+
             modelBuilder.Entity("ResultProcessor.Models.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -410,6 +444,14 @@ namespace ResultProcessor.Migrations
                     b.HasOne("ResultProcessor.Models.Department", "Department")
                         .WithMany("Programmes")
                         .HasForeignKey("DepartmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ResultProcessor.Models.ScoreSheet", b =>
+                {
+                    b.HasOne("ResultProcessor.Models.Course", "Course")
+                        .WithMany("ScoreSheets")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
