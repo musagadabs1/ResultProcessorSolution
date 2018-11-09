@@ -24,7 +24,8 @@ namespace ResultProcessor.Controllers
         // GET: Students
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive==true);
+            var user = HttpContext.User.Identity.Name;
+            var applicationDbContext = _context.Student.Include(s => s.Programme).Where(s => s.IsActive==true && (s.EnteredBy== user || s.ModifiedBy==user));
             return View(await applicationDbContext.ToListAsync());
         }
 
