@@ -23,10 +23,9 @@ namespace ResultProcessor.Models
         public string EnteredBy { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
-        //public int  ProgrammeId { get; set; }
-
+        
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }
-        //public virtual Programme Programme { get; set; }
+        
     }
 }

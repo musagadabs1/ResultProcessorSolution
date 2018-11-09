@@ -317,8 +317,6 @@ namespace ResultProcessor.Migrations
 
                     b.Property<DateTime>("ModifiedDate");
 
-                    b.Property<int?>("ProgrammeId");
-
                     b.Property<float>("Score");
 
                     b.Property<int>("Semester");
@@ -328,8 +326,6 @@ namespace ResultProcessor.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("ProgrammeId");
 
                     b.HasIndex("StudentId");
 
@@ -458,10 +454,6 @@ namespace ResultProcessor.Migrations
                         .WithMany("ScoreSheets")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ResultProcessor.Models.Programme")
-                        .WithMany("ScoreSheets")
-                        .HasForeignKey("ProgrammeId");
 
                     b.HasOne("ResultProcessor.Models.Student", "Student")
                         .WithMany()
