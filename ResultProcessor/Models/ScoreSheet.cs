@@ -16,9 +16,9 @@ namespace ResultProcessor.Models
         [Display(Name ="Course")]
         public int CourseId { get; set; }
         public float Score { get; set; }
-        public Semester Semester { get; set; }
-        public Level Level { get; set; }
-        public Grade Grade { get; set; }
+        public string Semester { get; set; }
+        public string Level { get; set; }
+        public string Grade { get; set; }
         public DateTime DateEntered { get; set; }
         public string EnteredBy { get; set; }
         public string ModifiedBy { get; set; }
