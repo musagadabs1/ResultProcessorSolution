@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,7 +9,11 @@ namespace ResultProcessor.Models
     public class ScoreSheet
     {
         public int Id { get; set; }
+        [Required()]
+        [Display(Name ="Student")]
         public int StudentId { get; set; }
+        [Required]
+        [Display(Name ="Course")]
         public int CourseId { get; set; }
         public float Score { get; set; }
         public Semester Semester { get; set; }
@@ -16,10 +21,12 @@ namespace ResultProcessor.Models
         public Grade Grade { get; set; }
         public DateTime DateEntered { get; set; }
         public string EnteredBy { get; set; }
-        public int  ProgrammeId { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime ModifiedDate { get; set; }
+        //public int  ProgrammeId { get; set; }
 
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }
-        public virtual Programme Programme { get; set; }
+        //public virtual Programme Programme { get; set; }
     }
 }

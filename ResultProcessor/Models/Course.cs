@@ -19,7 +19,7 @@ namespace ResultProcessor.Models
         [Display(Name = "Course Unit")]
         public int Unit { get; set; }
         [Display(Name ="Programme")]
-        //public int ProgrammeId { get; set; }
+        public int ProgrammeId { get; set; }
         public Semester Semester { get; set; }
         public Level Level { get; set; }
         [Display(Name ="Is Active?")]
@@ -29,7 +29,7 @@ namespace ResultProcessor.Models
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
 
-        //public virtual Programme Programme { get; set; }
+        public virtual Programme Programme { get; set; }
 
         public virtual ICollection<ScoreSheet> ScoreSheets { get; set; }
     }
