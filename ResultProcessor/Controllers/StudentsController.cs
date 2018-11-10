@@ -78,8 +78,8 @@ namespace ResultProcessor.Controllers
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName");
             var Genders = new List<SelectListItem>
                 {
-                    new SelectListItem {Text = "Male", Value = "1"},
-                    new SelectListItem {Text = "Female", Value = "2"}
+                    new SelectListItem {Text = "Male", Value = "Male"},
+                    new SelectListItem {Text = "Female", Value = "Female"}
                 };
 
             ViewBag.Genders = Genders;
@@ -125,8 +125,8 @@ namespace ResultProcessor.Controllers
             ViewData["ProgrammeId"] = new SelectList(_context.Programme, "Id", "ProgrammeName", student.ProgrammeId);
             var Genders = new List<SelectListItem>
                 {
-                    new SelectListItem {Text = "Male", Value = "1"},
-                    new SelectListItem {Text = "Female", Value = "2"}
+                    new SelectListItem {Text = "Male", Value = "Male"},
+                    new SelectListItem {Text = "Female", Value = "Female"}
                 };
 
             ViewBag.Genders = Genders;

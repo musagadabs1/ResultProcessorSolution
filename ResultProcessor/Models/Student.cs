@@ -29,7 +29,7 @@ namespace ResultProcessor.Models
         [Display(Name = "Date of Admission")]
         [DataType(DataType.Date)]
         public DateTime DOAdmission { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         [Required(ErrorMessage = "Phone Number is Required")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }

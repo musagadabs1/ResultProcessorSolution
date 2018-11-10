@@ -40,14 +40,14 @@ namespace ResultProcessor.Controllers
         public async Task<IActionResult> Import(IFormFile file)
         {
             string rootFolder = _hostingEnvironment.WebRootPath;
-            string filePath = file.FileName;
-            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, filePath));
+            string fileName = file.FileName;
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, fileName));
 
             using (var package=new ExcelPackage(fileInfo))
             {
                 var dateCreated = DateTime.Now;
                 var enteredBy = User.Identity.Name;
-                var excelWorkSheet = package.Workbook.Worksheets[0];
+                var excelWorkSheet = package.Workbook.Worksheets["Sheet1"];
                 //var excelWorkSheet = package.Workbook.Worksheets[0];
                 int totalRows = excelWorkSheet.Dimension.Rows;
                 var scoreSheets = new List<ScoreSheet>();
