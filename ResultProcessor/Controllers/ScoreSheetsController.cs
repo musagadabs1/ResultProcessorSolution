@@ -32,7 +32,7 @@ namespace ResultProcessor.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task<IActionResult> Import()
+        public IActionResult Import()
         {
             return View();
         }
@@ -45,7 +45,10 @@ namespace ResultProcessor.Controllers
 
             using (var package=new ExcelPackage(fileInfo))
             {
-                var excelWorkSheet = package.Workbook.Worksheets["ScoreSheet"];
+                var dateCreated = DateTime.Now;
+                var enteredBy = User.Identity.Name;
+                var excelWorkSheet = package.Workbook.Worksheets[1];
+                //var excelWorkSheet = package.Workbook.Worksheets["ScoreSheet"];
                 int totalRows = excelWorkSheet.Dimension.Rows;
                 var scoreSheets = new List<ScoreSheet>();
                 for (int i = 2; i <= totalRows; i++)
@@ -57,7 +60,9 @@ namespace ResultProcessor.Controllers
                         Score=float.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
                         Semester= excelWorkSheet.Cells[i,4].Value.ToString(),
                         Level=excelWorkSheet.Cells[i,5].Value.ToString(),
-                        Grade=excelWorkSheet.Cells[i,6].Value.ToString()
+                        Grade=excelWorkSheet.Cells[i,6].Value.ToString(),
+                        DateEntered=dateCreated,
+                        EnteredBy=enteredBy
 
                     });
                 }
