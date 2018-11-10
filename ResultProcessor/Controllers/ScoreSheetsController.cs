@@ -47,8 +47,8 @@ namespace ResultProcessor.Controllers
             {
                 var dateCreated = DateTime.Now;
                 var enteredBy = User.Identity.Name;
-                var excelWorkSheet = package.Workbook.Worksheets[1];
-                //var excelWorkSheet = package.Workbook.Worksheets["ScoreSheet"];
+                var excelWorkSheet = package.Workbook.Worksheets[0];
+                //var excelWorkSheet = package.Workbook.Worksheets[0];
                 int totalRows = excelWorkSheet.Dimension.Rows;
                 var scoreSheets = new List<ScoreSheet>();
                 for (int i = 2; i <= totalRows; i++)

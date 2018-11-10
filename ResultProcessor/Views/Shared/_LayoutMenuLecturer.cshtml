@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ResultProcessor.Models
+
+@inject SignInManager<IdentityUser>   signInManager
+@inject UserManager<IdentityUser>   userManager
+
+
+@{
+    ViewData["Title"] = "LecturerActionsPartial";
+}
+
+@if (signInManager.IsSignedIn(User))
+{
+    var currentUser = await userManager.GetUserAsync(User);
+    var isLecturer = currentUser != null && await userManager.IsInRoleAsync(currentUser, Constants.Lecturer);
+
+    @if (isLecturer)
+    {
+        <li><a asp-area="" asp-controller="Students" asp-action="Index">Student</a></li>
+        <li><a asp-area="" asp-controller="Scoresheets" asp-action="Index">Score Sheets</a></li>
+    }
+}
+
