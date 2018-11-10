@@ -40,9 +40,11 @@ namespace ResultProcessor.Controllers
         public async Task<IActionResult> Import(IFormFile file)
         {
             string rootFolder = _hostingEnvironment.WebRootPath;
-            string folderName = "\\Excels";
-            string fileName = file.FileName;
-            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder,folderName, fileName));
+            
+            //string fileName = file.FileName;
+            string fileName = @"CourseTest.xlsx";// file.FileName;
+            //FileInfo fileInfo = new FileInfo(fileName);
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, fileName));
 
             using (var package=new ExcelPackage(fileInfo))
             {
