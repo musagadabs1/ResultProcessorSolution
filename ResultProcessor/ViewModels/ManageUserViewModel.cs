@@ -10,5 +10,6 @@ namespace ResultProcessor.ViewModels
     {
         public IdentityUser[] Administrators { get; set; }
         public IdentityUser[] Everyone { get; set; }
+        public IdentityRole[] Roles { get; set; }
     }
 }

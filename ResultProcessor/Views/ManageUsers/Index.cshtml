@@ -3,8 +3,9 @@
     ViewData["Title"] = "Index";
 
 
-    int adminSno = 1;
-    int userSno = 1;
+    int adminIndex = 1;
+    int userIndex = 1;
+    int roleIndex = 1;
 }
 
 <h2>User Manager</h2>
@@ -20,13 +21,13 @@
     </thead>
     @foreach (var user in Model.Administrators)
     {
-       
+
         <tr>
-            <td>@adminSno</td>
+            <td>@adminIndex</td>
             <td>@user.UserName</td>
             <td>@user.Email</td>
         </tr>
-        adminSno += 1;
+        adminIndex += 1;
     }
 </table>
 <br />
@@ -44,10 +45,31 @@
     {
 
         <tr>
-            <td>@userSno</td>
+            <td>@userIndex</td>
             <td>@user.UserName</td>
             <td>@user.Email</td>
         </tr>
-        userSno += 1;
+        userIndex += 1;
+    }
+</table>
+
+<br />
+<h2>User Roles</h2>
+<table class="table table-bordered table-condensed table-responsive table-striped">
+    <thead>
+        <tr>
+            <td>SNo</td>
+            <td>Role Name</td>
+        </tr>
+    </thead>
+
+    @foreach (var role in Model.Roles)
+    {
+
+        <tr>
+            <td>@roleIndex</td>
+            <td>@role.NormalizedName</td>
+        </tr>
+        roleIndex += 1;
     }
 </table>
