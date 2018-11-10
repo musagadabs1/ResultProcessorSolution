@@ -79,12 +79,12 @@ namespace ResultProcessor.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    if (!await _roleManager.RoleExistsAsync(Constants.Lecturer))
+                    if (!await _roleManager.RoleExistsAsync(Constants.User))
                     {
-                        var roleResult = await _roleManager.CreateAsync(new IdentityRole(Constants.Lecturer));
+                        var roleResult = await _roleManager.CreateAsync(new IdentityRole(Constants.User));
                         if (roleResult.Succeeded)
                         {
-                            var res = await _userManager.AddToRoleAsync(user, Constants.Lecturer);
+                            var res = await _userManager.AddToRoleAsync(user, Constants.User);
 
                             if (res.Succeeded)
                             {

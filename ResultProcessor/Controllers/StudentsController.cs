@@ -12,7 +12,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
-    [Authorize(Roles="Admin,Manager,User")]
+    [Authorize(Roles="Admin,Lecturer,User")]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;

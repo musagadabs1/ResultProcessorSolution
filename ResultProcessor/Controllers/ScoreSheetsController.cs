@@ -16,7 +16,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
-    [Authorize(Roles="Admin,User,Lecturer,Manager")]
+    [Authorize(Roles="Admin,Lecturer")]
     public class ScoreSheetsController : Controller
     {
         private readonly ApplicationDbContext _context;
