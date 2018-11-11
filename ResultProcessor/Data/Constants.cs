@@ -10,5 +10,7 @@ namespace ResultProcessor.Models
         public const string Administrator = "Admin";
         public const string Lecturer = "Lecturer";
         public const string User = "User";
+
+
     }
 }

@@ -63,7 +63,7 @@ namespace ResultProcessor.Controllers
                         Score=float.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
                         Semester= excelWorkSheet.Cells[i,4].Value.ToString(),
                         Level=excelWorkSheet.Cells[i,5].Value.ToString(),
-                        Grade=excelWorkSheet.Cells[i,6].Value.ToString(),
+                        Grade=Utility.GetGrade(float.Parse(excelWorkSheet.Cells[i, 3].Value.ToString())),
                         DateEntered=dateCreated,
                         EnteredBy=enteredBy
 
@@ -159,16 +159,17 @@ namespace ResultProcessor.Controllers
                 new SelectListItem {Text="level SPILL II", Value = "level SPILL II"}
             };
             ViewBag.Level = level;
-            var Grades = new List<SelectListItem>
+            var Sessions = new List<SelectListItem>
             {
-                new SelectListItem {Text="A", Value = "A"},
-                new SelectListItem {Text="B", Value = "B"},
-                new SelectListItem {Text="C", Value = "C"},
-                new SelectListItem {Text="D", Value = "D"},
-                new SelectListItem {Text="E", Value = "E"},
-                new SelectListItem {Text="F", Value = "F"}
+                new SelectListItem {Text="2018/2019", Value = "2018/2019"},
+                new SelectListItem {Text="2019/2020", Value = "2019/2020"},
+                new SelectListItem {Text="2020/2021", Value = "2020/2021"},
+                new SelectListItem {Text="2021/2022", Value = "2021/2022"},
+                new SelectListItem {Text="2022/2023", Value = "2022/2023"},
+                new SelectListItem {Text="2023/2024", Value = "2023/2024"},
+                new SelectListItem {Text="2024/2025", Value = "2024/2025"}
             };
-            ViewBag.Grades = Grades;
+            ViewBag.Sessions = Sessions;
             return View();
         }
 
@@ -185,6 +186,7 @@ namespace ResultProcessor.Controllers
                 var dateCreated = DateTime.Now;
                 scoreSheet.EnteredBy = createdBy;
                 scoreSheet.DateEntered = dateCreated;
+                scoreSheet.Grade = Utility.GetGrade(scoreSheet.Score);
                 _context.Add(scoreSheet);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -231,7 +233,7 @@ namespace ResultProcessor.Controllers
                     var dateCreated = DateTime.Now;
                     scoreSheet.ModifiedBy = createdBy;
                     scoreSheet.ModifiedDate = dateCreated;
-
+                    scoreSheet.Grade = Utility.GetGrade(scoreSheet.Score);
                     _context.Update(scoreSheet);
                     await _context.SaveChangesAsync();
                 }
