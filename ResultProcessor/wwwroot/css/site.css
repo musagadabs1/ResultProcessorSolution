@@ -11,7 +11,22 @@ body {
     padding-left: 15px;
     padding-right: 15px;
 }
-
+#color-navbar {
+    background-color: #0094ff;
+    border-color: #0094ff;
+}
+#color-navbar ul li a{
+    color:#ffffff;
+}
+#color-navbar ul li:hover{
+    background-color:#000;
+}
+.navbar-inverse {
+    background-color: #0094ff;
+}
+.navbar-default {
+    background-color:#ff006e;
+}
 /* Carousel */
 .carousel-caption p {
     font-size: 20px;

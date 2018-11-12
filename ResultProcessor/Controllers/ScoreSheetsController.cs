@@ -16,7 +16,7 @@ using ResultProcessor.Models;
 
 namespace ResultProcessor.Controllers
 {
-    [Authorize(Roles="Admin,User,Lecturer,Manager")]
+    [Authorize(Roles="Admin,Lecturer")]
     public class ScoreSheetsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -32,7 +32,7 @@ namespace ResultProcessor.Controllers
             _hostingEnvironment = hostingEnvironment;
         }
 
-        public async Task<IActionResult> Import()
+        public IActionResult Import()
         {
             return View();
         }
@@ -40,12 +40,18 @@ namespace ResultProcessor.Controllers
         public async Task<IActionResult> Import(IFormFile file)
         {
             string rootFolder = _hostingEnvironment.WebRootPath;
-            string filePath = file.FileName;
-            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, filePath));
+            
+            //string fileName = file.FileName;
+            string fileName = @"CourseTest.xlsx";// file.FileName;
+            //FileInfo fileInfo = new FileInfo(fileName);
+            FileInfo fileInfo = new FileInfo(Path.Combine(rootFolder, fileName));
 
             using (var package=new ExcelPackage(fileInfo))
             {
-                var excelWorkSheet = package.Workbook.Worksheets["ScoreSheet"];
+                var dateCreated = DateTime.Now;
+                var enteredBy = User.Identity.Name;
+                var excelWorkSheet = package.Workbook.Worksheets["Sheet1"];
+                //var excelWorkSheet = package.Workbook.Worksheets[0];
                 int totalRows = excelWorkSheet.Dimension.Rows;
                 var scoreSheets = new List<ScoreSheet>();
                 for (int i = 2; i <= totalRows; i++)
@@ -54,10 +60,12 @@ namespace ResultProcessor.Controllers
                     {
                         RegNo = excelWorkSheet.Cells[i, 1].Value.ToString(),
                         CourseId =int.Parse( excelWorkSheet.Cells[i, 2].Value.ToString()),
-                        Score=float.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
+                        Score=int.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
                         Semester= excelWorkSheet.Cells[i,4].Value.ToString(),
                         Level=excelWorkSheet.Cells[i,5].Value.ToString(),
-                        Grade=excelWorkSheet.Cells[i,6].Value.ToString()
+                        Grade=Utility.GetGrade(int.Parse(excelWorkSheet.Cells[i, 3].Value.ToString())),
+                        DateEntered=dateCreated,
+                        EnteredBy=enteredBy
 
                     });
                 }
@@ -151,16 +159,17 @@ namespace ResultProcessor.Controllers
                 new SelectListItem {Text="level SPILL II", Value = "level SPILL II"}
             };
             ViewBag.Level = level;
-            var Grades = new List<SelectListItem>
+            var Sessions = new List<SelectListItem>
             {
-                new SelectListItem {Text="A", Value = "A"},
-                new SelectListItem {Text="B", Value = "B"},
-                new SelectListItem {Text="C", Value = "C"},
-                new SelectListItem {Text="D", Value = "D"},
-                new SelectListItem {Text="E", Value = "E"},
-                new SelectListItem {Text="F", Value = "F"}
+                new SelectListItem {Text="2018/2019", Value = "2018/2019"},
+                new SelectListItem {Text="2019/2020", Value = "2019/2020"},
+                new SelectListItem {Text="2020/2021", Value = "2020/2021"},
+                new SelectListItem {Text="2021/2022", Value = "2021/2022"},
+                new SelectListItem {Text="2022/2023", Value = "2022/2023"},
+                new SelectListItem {Text="2023/2024", Value = "2023/2024"},
+                new SelectListItem {Text="2024/2025", Value = "2024/2025"}
             };
-            ViewBag.Grades = Grades;
+            ViewBag.Sessions = Sessions;
             return View();
         }
 
@@ -169,7 +178,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Create([Bind("Id,RegNo,CourseId,Score,Semester,Session,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (ModelState.IsValid)
             {
@@ -177,6 +186,7 @@ namespace ResultProcessor.Controllers
                 var dateCreated = DateTime.Now;
                 scoreSheet.EnteredBy = createdBy;
                 scoreSheet.DateEntered = dateCreated;
+                scoreSheet.Grade = Utility.GetGrade(scoreSheet.Score);
                 _context.Add(scoreSheet);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -208,7 +218,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RegNo,CourseId,Score,Semester,Session,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (id != scoreSheet.Id)
             {
@@ -223,7 +233,7 @@ namespace ResultProcessor.Controllers
                     var dateCreated = DateTime.Now;
                     scoreSheet.ModifiedBy = createdBy;
                     scoreSheet.ModifiedDate = dateCreated;
-
+                    scoreSheet.Grade = Utility.GetGrade(scoreSheet.Score);
                     _context.Update(scoreSheet);
                     await _context.SaveChangesAsync();
                 }

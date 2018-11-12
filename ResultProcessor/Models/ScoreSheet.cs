@@ -15,12 +15,13 @@ namespace ResultProcessor.Models
         [Required]
         [Display(Name ="Course")]
         public int CourseId { get; set; }
-        public float Score { get; set; }
+        public int Score { get; set; }
         public string Semester { get; set; }
         public string Level { get; set; }
-        public string Grade { get; set; }
+        public char Grade { get; set; }
         public DateTime DateEntered { get; set; }
         public string EnteredBy { get; set; }
+        public string Session { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime ModifiedDate { get; set; }
         

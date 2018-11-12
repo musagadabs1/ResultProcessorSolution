@@ -29,7 +29,7 @@ namespace ResultProcessor.Models
         [Display(Name = "Date of Admission")]
         [DataType(DataType.Date)]
         public DateTime DOAdmission { get; set; }
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         [Required(ErrorMessage = "Phone Number is Required")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
@@ -49,7 +49,7 @@ namespace ResultProcessor.Models
         public int ProgrammeId { get; set; }
 
         //public virtual Department Department { get; set; }
-        public virtual Programme Programme { get; set; }
+        public virtual Programme Programmes { get; set; }
 
         
     }

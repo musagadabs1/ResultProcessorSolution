@@ -8,7 +8,9 @@ namespace ResultProcessor.Models
     public static class Constants
     {
         public const string Administrator = "Admin";
-        public const string Manager = "Manager";
+        public const string Lecturer = "Lecturer";
         public const string User = "User";
+
+
     }
 }

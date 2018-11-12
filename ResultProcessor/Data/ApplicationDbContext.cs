@@ -19,5 +19,11 @@ namespace ResultProcessor.Data
         public DbSet<ResultProcessor.Models.Department> Department { get; set; }
         public DbSet<ResultProcessor.Models.Course> Course { get; set; }
         public DbSet<ResultProcessor.Models.ScoreSheet> ScoreSheet { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            //builder.Entity<Student>().HasMany(t => t.Programmes).WithMany()
+            base.OnModelCreating(builder);  
+        }
     }
 }
