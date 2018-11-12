@@ -102,14 +102,16 @@ namespace ResultProcessor.Controllers
                     var totalGradePoint = 0.0;
 
 
-                    List<Processed> scoreToProcess= await GetScoreSheets(sem,sess,level);
+                    List<string> getReNos= await GetRegNos(sem,sess,level);
 
-                    for (var index=0; index<=scoreToProcess.Count;index++)
+                    for (var index=0; index<= getReNos.Count;index++)
                     {
                         //scoreToProcess.FirstOrDefault().
 
-                        //regNo =scoreToProcess[index].FirstOrDefault().RegNo;
-                        List<ScoreViewModel> scoreViews =await ScoresAndUnit("", sem, sess, level);
+                        regNo =getReNos[index];
+
+                        
+                        List<ScoreViewModel> scoreViews =await ScoresAndUnit(regNo, sem, sess, level);
                         foreach (var s in scoreViews)
                         {
 
@@ -128,7 +130,7 @@ namespace ResultProcessor.Controllers
                         var processedBy = User.Identity.Name;
                         var processedDate = DateTime.Now;
                         processedResult.GPA =Convert.ToDouble(gpa);
-                        processedResult.CGPA = cgpa;
+                        processedResult.CGPA = Convert.ToDouble(gpa);
                         processedResult.DateProcessed = processedDate;
                         processedResult.ProcessedBy = processedBy;
                         _context.Add(processedResult);
@@ -162,6 +164,25 @@ namespace ResultProcessor.Controllers
                 });
             }
             return scoresWithUnit;
+        }
+        private async Task<List<string>> GetRegNos(string semester,string session, string level)
+        {
+            try
+            {
+                List<string> regNoCollection = new List<string>();
+                var regNos =await _context.ScoreSheet.Include("Course").Where(s => s.Semester == semester && s.Session == session && s.Level == level).ToListAsync();
+
+                foreach (var item in regNos)
+                {
+                    regNoCollection.Add(item.RegNo);
+                }
+                return regNoCollection;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         private async Task<List<Processed>> GetScoreSheets(string semester, string session, string level)
         {
