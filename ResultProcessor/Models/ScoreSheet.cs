@@ -15,7 +15,7 @@ namespace ResultProcessor.Models
         [Required]
         [Display(Name ="Course")]
         public int CourseId { get; set; }
-        public float Score { get; set; }
+        public int Score { get; set; }
         public string Semester { get; set; }
         public string Level { get; set; }
         public char Grade { get; set; }

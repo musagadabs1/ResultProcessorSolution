@@ -60,10 +60,10 @@ namespace ResultProcessor.Controllers
                     {
                         RegNo = excelWorkSheet.Cells[i, 1].Value.ToString(),
                         CourseId =int.Parse( excelWorkSheet.Cells[i, 2].Value.ToString()),
-                        Score=float.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
+                        Score=int.Parse(excelWorkSheet.Cells[i,3].Value.ToString()),
                         Semester= excelWorkSheet.Cells[i,4].Value.ToString(),
                         Level=excelWorkSheet.Cells[i,5].Value.ToString(),
-                        Grade=Utility.GetGrade(float.Parse(excelWorkSheet.Cells[i, 3].Value.ToString())),
+                        Grade=Utility.GetGrade(int.Parse(excelWorkSheet.Cells[i, 3].Value.ToString())),
                         DateEntered=dateCreated,
                         EnteredBy=enteredBy
 
@@ -178,7 +178,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Create([Bind("Id,RegNo,CourseId,Score,Semester,Session,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (ModelState.IsValid)
             {
@@ -218,7 +218,7 @@ namespace ResultProcessor.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RegNo,CourseId,Score,Semester,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RegNo,CourseId,Score,Semester,Session,Level,Grade,DateEntered,EnteredBy,ModifiedBy,ModifiedDate")] ScoreSheet scoreSheet)
         {
             if (id != scoreSheet.Id)
             {
