@@ -12,8 +12,8 @@ namespace ResultProcessor.Models
         public string Semester { get; set; }
         public string Session { get; set; }
         public string Level { get; set; }
-        public float GPA { get; set; }
-        public float CGPA { get; set; }
+        public double GPA { get; set; }
+        public double CGPA { get; set; }
         public string ProcessedBy { get; set; }
         public string ModifiedBy { get; set; }
         public DateTime DateProcessed { get; set; }

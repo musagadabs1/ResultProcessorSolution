@@ -4,9 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Create</h2>
+<h2>Processe Result</h2>
 
-<h4>ProcessedResult</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,36 +13,27 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="RegNo" class="control-label"></label>
-                <input asp-for="RegNo" class="form-control" />
+                <select asp-for="RegNo" class="form-control" asp-items="ViewBag.RegNo"></select>
                 <span asp-validation-for="RegNo" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Semester" class="control-label"></label>
-                <input asp-for="Semester" class="form-control" />
+                <select asp-for="Semester" asp-items="(List<SelectListItem>)ViewBag.Semester" class="form-control"></select>
                 <span asp-validation-for="Semester" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Session" class="control-label"></label>
-                <input asp-for="Session" class="form-control" />
+                <select asp-for="Session" asp-items="(List<SelectListItem>)ViewBag.Sessions" class="form-control"></select>
                 <span asp-validation-for="Session" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Level" class="control-label"></label>
-                <input asp-for="Level" class="form-control" />
+                <select asp-for="Level" asp-items="(List<SelectListItem>)ViewBag.Level" class="form-control"></select>
                 <span asp-validation-for="Level" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <label asp-for="GPA" class="control-label"></label>
-                <input asp-for="GPA" class="form-control" />
-                <span asp-validation-for="GPA" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CGPA" class="control-label"></label>
-                <input asp-for="CGPA" class="form-control" />
-                <span asp-validation-for="CGPA" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Process" class="btn btn-primary" />
             </div>
         </form>
     </div>

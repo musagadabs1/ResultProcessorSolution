@@ -7,7 +7,7 @@ namespace ResultProcessor.ViewModels
 {
     public class Processed
     {
-        public float Score{ get; set; }
+        //public float Score{ get; set; }
         public char Grade{ get; set; }
         public string RegNo { get; set; }
         public int CourseUnit { get; set; }
