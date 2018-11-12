@@ -25,5 +25,7 @@ namespace ResultProcessor.Data
             //builder.Entity<Student>().HasMany(t => t.Programmes).WithMany()
             base.OnModelCreating(builder);  
         }
+
+        public DbSet<ResultProcessor.Models.ProcessedResult> ProcessedResult { get; set; }
     }
 }

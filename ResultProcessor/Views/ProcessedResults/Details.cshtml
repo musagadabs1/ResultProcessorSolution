@@ -1,0 +1,54 @@
+﻿@model ResultProcessor.Models.ProcessedResult
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>ProcessedResult</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.RegNo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RegNo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Semester)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Semester)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Session)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Session)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Level)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Level)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GPA)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GPA)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CGPA)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CGPA)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
