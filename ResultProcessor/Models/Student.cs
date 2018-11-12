@@ -44,12 +44,12 @@ namespace ResultProcessor.Models
         [Display(Name = "Is Active?")]
         public bool IsActive { get; set; }
         //public int DeptId { get; set; }
-        [Required()]
-        [Display(Name = "Programme")]
-        public int ProgrammeId { get; set; }
+        //[Required()]
+        //[Display(Name = "Programme")]
+        //public int ProgrammeId { get; set; }
 
         //public virtual Department Department { get; set; }
-        public virtual Programme Programme { get; set; }
+        public virtual ICollection<Programme> Programmes { get; set; }
 
         
     }
