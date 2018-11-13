@@ -94,22 +94,28 @@ namespace ResultProcessor.Controllers
                 {
                     double gpa = 0.0F;
                     double cgpa = 0.0F;
-                    var regNo = processedResult.RegNo;
+                    var regNo = string.Empty;
                     var sem = processedResult.Semester;
                     var sess = processedResult.Session;
                     var level = processedResult.Level;
                     var totalCreditUnit = 0;
                     var totalGradePoint = 0.0;
-
+                    var enteredRegNo = "";
 
                     List<string> getReNos= await GetRegNos(sem,sess,level);
 
-                    for (var index=0; index<= getReNos.Count;index++)
+                    for (var index=0; index<= getReNos.Count-1;index++)
                     {
-                        //scoreToProcess.FirstOrDefault().
 
-                        regNo =getReNos[index];
+                        regNo = getReNos[index];
 
+                        if (regNo==enteredRegNo)
+                        {
+                            return RedirectToAction(nameof(Index));
+                        }
+                        
+                        
+                        int id = index + 1;
                         
                         List<ScoreViewModel> scoreViews =await ScoresAndUnit(regNo, sem, sess, level);
                         foreach (var s in scoreViews)
@@ -127,21 +133,31 @@ namespace ResultProcessor.Controllers
                         gpa = totalGradePoint / totalCreditUnit;
 
                         cgpa = gpa;
+
                         var processedBy = User.Identity.Name;
                         var processedDate = DateTime.Now;
+
                         processedResult.GPA =Convert.ToDouble(gpa);
                         processedResult.CGPA = Convert.ToDouble(gpa);
+
                         processedResult.DateProcessed = processedDate;
                         processedResult.ProcessedBy = processedBy;
+                        processedResult.RegNo = regNo;
+                        processedResult.Id = id;
                         _context.Add(processedResult);
                         await _context.SaveChangesAsync();
+                        enteredRegNo = regNo;
+                        totalCreditUnit = 0;
+                        totalGradePoint = 0.0;
 
                     }
+                   
                     
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
+                    ViewBag.Error = "Something happened. " + Environment.NewLine + ex.Message;
 
                     throw ex;
                 }
@@ -153,7 +169,7 @@ namespace ResultProcessor.Controllers
         {
             List<ScoreViewModel> scoresWithUnit = new List<ScoreViewModel>();
             List<Processed> scores =await GetScoreSheets(semester, session, level);
-            scores = scores.Where(s => s.RegNo == regNo).ToList();
+            scores =scores.Where(s => s.RegNo == regNo).ToList();
             foreach (var item in scores)
             {
                 scoresWithUnit.Add(new ScoreViewModel
@@ -170,11 +186,11 @@ namespace ResultProcessor.Controllers
             try
             {
                 List<string> regNoCollection = new List<string>();
-                var regNos =await _context.ScoreSheet.Include("Course").Where(s => s.Semester == semester && s.Session == session && s.Level == level).ToListAsync();
 
-                foreach (var item in regNos)
+                var reg =await (from re in _context.ScoreSheet where re.Session==session && re.Semester==semester && re.Level==level select re.RegNo).Distinct().ToListAsync();
+               foreach (var item in reg)
                 {
-                    regNoCollection.Add(item.RegNo);
+                    regNoCollection.Add(item);
                 }
                 return regNoCollection;
             }
