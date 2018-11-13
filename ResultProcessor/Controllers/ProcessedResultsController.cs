@@ -26,6 +26,39 @@ namespace ResultProcessor.Controllers
             return View(await _context.ProcessedResult.ToListAsync());
         }
 
+        //private async 
+
+        //Get Previous CGPA
+        public double GetPreviousCGPA(string regNo)
+        {
+            double previousCGPA = 0.0d;
+            try
+            {
+                var getTotalCreditUnits = _context.ProcessedResult.Where(r => r.RegNo == regNo).Select(r => r.TotalCreditUnit);
+                
+                var getTotalGradePoints =_context.ProcessedResult.Where(a => a.RegNo == regNo).Select(a => a.TotalGradePoint);
+
+                // Test if there is no previous credit units and Grade Points. Return 0 if not
+                if (getTotalCreditUnits.Count() <= 0 || getTotalGradePoints.Count() <= 0)
+                {
+                    return 0.0d;
+                }
+
+                // Find the summation of all credit units and grade points
+                int totalCreditUnit = getTotalCreditUnits.Sum();
+                double totalGradePoint = getTotalGradePoints.Sum();
+
+                //Determine the previous CGPA by dividing the total Grade Point by Total Credit Units
+                previousCGPA = (double)totalGradePoint / totalCreditUnit;
+                return Math.Round(previousCGPA, 2);
+            }
+            catch (Exception enEx)
+            {
+                throw enEx;
+            }
+
+        }
+
         // GET: ProcessedResults/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -92,8 +125,8 @@ namespace ResultProcessor.Controllers
 
                 try
                 {
-                    double gpa = 0.0F;
-                    double cgpa = 0.0F;
+                    double gradePointAverage = 0.0F;
+                    double cummulativeGradePointAverage = 0.0F;
                     var regNo = string.Empty;
                     var sem = processedResult.Semester;
                     var sess = processedResult.Session;
@@ -130,18 +163,35 @@ namespace ResultProcessor.Controllers
 
                             totalGradePoint += gradePoint;
                         }
-                        gpa = totalGradePoint / totalCreditUnit;
+                        //Retrieve the previous GPA from database by RegNo
+                        double previousGPA = GetPreviousCGPA(regNo);
 
-                        cgpa = gpa;
+                        gradePointAverage = totalGradePoint / totalCreditUnit;
+                        gradePointAverage = Math.Round(gradePointAverage, 2);
+
+                        // Determine new Semester
+                        if (previousGPA == 0.0)
+                        {
+                            cummulativeGradePointAverage = gradePointAverage;
+                        }
+                        else
+                        {
+                            // Compute the Cummulative Grade Point Average by adding the previous GPA to current GPA and divide by 2
+                            cummulativeGradePointAverage = (gradePointAverage + previousGPA) / 2;
+                        }
+
+                        //cummulativeGradePointAverage = gpa;
 
                         var processedBy = User.Identity.Name;
                         var processedDate = DateTime.Now;
 
-                        processedResult.GPA =Convert.ToDouble(gpa);
-                        processedResult.CGPA = Convert.ToDouble(gpa);
+                        processedResult.GPA = gradePointAverage;
+                        processedResult.CGPA = cummulativeGradePointAverage;
 
                         processedResult.DateProcessed = processedDate;
                         processedResult.ProcessedBy = processedBy;
+                        processedResult.TotalCreditUnit = totalCreditUnit;
+                        processedResult.TotalGradePoint =Math.Round(totalGradePoint);
                         processedResult.RegNo = regNo;
                         processedResult.Id = id;
                         _context.Add(processedResult);
