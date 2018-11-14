@@ -29,7 +29,7 @@ namespace ResultProcessor.Controllers
         //private async 
 
         //Get Previous CGPA
-        public double GetPreviousCGPA(string regNo)
+        private double GetPreviousCGPA(string regNo)
         {
             double previousCGPA = 0.0d;
             try
